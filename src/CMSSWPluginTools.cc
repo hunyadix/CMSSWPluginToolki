@@ -3,6 +3,33 @@
 
 namespace CMSSWPluginTools
 {
+	void printDigiCollectionInfo(const edm::Handle<edm::DetSetVector<PixelDigi>>& digiCollection)
+	{
+		int digiCounter = 0;
+		std::map<uint32_t, int> digisOnDetCounter;
+		for(const edm::DetSet<PixelDigi>& digiSetOnModule: *digiCollection)
+		{
+			DetId detId(digiSetOnModule.id);
+			unsigned int subdetId = detId.subdetId();
+			// Discarding non-pixel digis
+			if(subdetId != PixelSubdetector::PixelBarrel && subdetId != PixelSubdetector::PixelEndcap) continue;
+			// Looping on digis on the same detector_part
+			int numDigisOnModule = digiSetOnModule.size();
+			digiCounter += numDigisOnModule;
+			if(numDigisOnModule == 0) continue;
+			digisOnDetCounter.emplace(std::make_pair(detId, numDigisOnModule));
+		}
+		std::cout << "Digi collection info:\n";
+		std::cout << "Number of digis in the collection: " << digiCounter << "\n";
+		if(digiCounter == 0) return;
+		std::cout << "Detailed information: \n";
+		std::cout << "[\n";
+		for(const auto& pair: digisOnDetCounter)
+		{
+			std::cout << "\tdetid: " << pair.first << ", num digis: " << pair.second << "\n";
+		}
+		std::cout << "]" << std::endl;
+	}
 	int getNumDigiCollectionEntries(const edm::Handle<edm::DetSetVector<PixelDigi>>& digiCollection)
 	{
 		int numDigis = 0;

@@ -6,6 +6,9 @@
 // #include "FWCore/Framework/interface/MakerMacros.h"
 // #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
+#include "Geometry/Records/interface/TrackerTopologyRcd.h"
+#include "DataFormats/TrackerCommon/interface/TrackerTopology.h"
+
 #include "DataFormats/SiPixelDigi/interface/PixelDigi.h"
 #include "DataFormats/SiPixelCluster/interface/SiPixelCluster.h"
 
@@ -23,8 +26,9 @@
 
 namespace CMSSWPluginTools
 {
-		int getNumDigiCollectionEntries(const edm::Handle<edm::DetSetVector<PixelDigi>>& digiCollection);
-		void plotAdcDistributionFromDigiCollection(const edm::Handle<edm::DetSetVector<PixelDigi>>& digiCollection, const std::string& histogramName, const std::string& histogramTitle, const std::string& saveName);
+	void printDigiCollectionInfo(const edm::Handle<edm::DetSetVector<PixelDigi>>& digiCollection);
+	int getNumDigiCollectionEntries(const edm::Handle<edm::DetSetVector<PixelDigi>>& digiCollection);
+	void plotAdcDistributionFromDigiCollection(const edm::Handle<edm::DetSetVector<PixelDigi>>& digiCollection, const std::string& histogramName, const std::string& histogramTitle, const std::string& saveName);
 }
 
 #endif
