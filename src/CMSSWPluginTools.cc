@@ -32,13 +32,34 @@ namespace CMSSWPluginTools
 	}
 	int getNumDigiCollectionEntries(const edm::Handle<edm::DetSetVector<PixelDigi>>& digiCollection)
 	{
-		int numDigis = 0;
-		for(const edm::DetSet<PixelDigi>& digisOnModulePtr: *digiCollection)
+		int counter = 0;
+		for(const edm::DetSet<PixelDigi>& digisOnModule: *digiCollection)
 		{
-			numDigis += digisOnModulePtr.size();
+			counter += digisOnModule.size();
 		}
-		return numDigis;
+		return counter;
 	}
+
+	int getNumClusterCollectionEntries(const edm::Handle<edmNew::DetSetVector<SiPixelCluster>>& clusterCollection)
+	{
+		int counter = 0;
+		for(const auto& clustersOnModule: *clusterCollection)
+		{
+			counter += clustersOnModule.size();
+		}
+		return counter;
+	}
+	int getNumTrajCollectionEntries(const edm::Handle<TrajTrackAssociationCollection>& trajTrackCollection)
+	{
+		int counter = 0;
+		for(const auto& currentTrackKeypair: *trajTrackCollection)
+		{
+			auto traj = currentTrackKeypair.key ;
+			counter += traj -> measurements().size();
+		}
+		return counter;
+	}
+
 
 	// Plotters
 	void plotAdcDistributionFromDigiCollection(const edm::Handle<edm::DetSetVector<PixelDigi>>& digiCollection, const std::string& histogramName, const std::string& histogramTitle, const std::string& saveName)
